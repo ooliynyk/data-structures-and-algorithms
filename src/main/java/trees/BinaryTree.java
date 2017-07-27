@@ -58,7 +58,7 @@ public class BinaryTree {
         if (root == null)
             return false;
 
-        Node parentOfCurrent = null;
+        Node parentOfCurrent = root;
         Node current = root;
         boolean isLeftChild = false;
         while (current != null && current.data != key) {
@@ -97,17 +97,7 @@ public class BinaryTree {
                     parentOfCurrent.rightChild = current.leftChild;
                 }
             } else {
-                Node parentOfSuccessor = current.rightChild;
-                Node successor = current.rightChild;
-                while (parentOfSuccessor.leftChild != null) {
-                    parentOfSuccessor = successor;
-                    successor = parentOfSuccessor.leftChild;
-                }
-
-                if (successor != current.rightChild) {
-                    parentOfSuccessor.leftChild = successor.rightChild;
-                    successor.rightChild = current.rightChild;
-                }
+                Node successor = getSuccessor(current);
 
                 if (current == root) {
                     root = successor;
@@ -122,6 +112,21 @@ public class BinaryTree {
         }
 
         return false;
+    }
+
+    private Node getSuccessor(Node current) {
+        Node parentOfSuccessor = current.rightChild;
+        Node successor = current.rightChild;
+        while (parentOfSuccessor.leftChild != null) {
+            parentOfSuccessor = successor;
+            successor = parentOfSuccessor.leftChild;
+        }
+
+        if (successor != current.rightChild) {
+            parentOfSuccessor.leftChild = successor.rightChild;
+            successor.rightChild = current.rightChild;
+        }
+        return successor;
     }
 
     public void iterate() {
