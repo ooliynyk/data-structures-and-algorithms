@@ -6,12 +6,12 @@ public class BinaryTree {
 
     private Node root;
 
-    public void insert(double element) {
-        Node newNode = new Node(element);
+    public void insert(char symbol, double occurrences) {
+        Node newNode = new Node(symbol, occurrences);
         if (root != null) {
             Node current = root;
             while (true) {
-                if (element < current.data) {
+                if (occurrences < current.occurrences) {
                     if (current.leftChild == null) {
                         current.leftChild = newNode;
                         return;
@@ -32,8 +32,8 @@ public class BinaryTree {
 
     public Node find(double key) {
         Node current = root;
-        while (current != null && current.data != key) {
-            if (key < current.data) {
+        while (current != null && current.occurrences != key) {
+            if (key < current.occurrences) {
                 current = current.leftChild;
             } else {
                 current = current.rightChild;
@@ -61,9 +61,9 @@ public class BinaryTree {
         Node parentOfCurrent = root;
         Node current = root;
         boolean isLeftChild = false;
-        while (current != null && current.data != key) {
+        while (current != null && current.occurrences != key) {
             parentOfCurrent = current;
-            if (key < current.data) {
+            if (key < current.occurrences) {
                 isLeftChild = true;
                 current = current.leftChild;
             } else {
@@ -143,25 +143,16 @@ public class BinaryTree {
     }
 
     @Data
-    private class Node {
+    public static class Node {
 
-        private double data;
+        private char symbol;
+        private double occurrences;
         private Node leftChild;
         private Node rightChild;
 
-        public Node(double element) {
-            this.data = element;
-        }
-    }
-
-    private class Iterator {
-        private BinaryTree tree;
-        private Node current;
-        private Node parent;
-
-        public Node next() {
-
-            return current;
+        public Node(char symbol, double occurrences) {
+            this.symbol = symbol;
+            this.occurrences = occurrences;
         }
     }
 
