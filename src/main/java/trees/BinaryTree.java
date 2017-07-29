@@ -1,12 +1,10 @@
 package trees;
 
-import lombok.Data;
-
-public class BinaryTree {
+public class BinaryTree  {
 
     private Node root;
 
-    public void insert(char symbol, double occurrences) {
+    public void insert(char symbol, long occurrences) {
         Node newNode = new Node(symbol, occurrences);
         if (root != null) {
             Node current = root;
@@ -30,7 +28,7 @@ public class BinaryTree {
         }
     }
 
-    public Node find(double key) {
+    public Node find(int key) {
         Node current = root;
         while (current != null && current.occurrences != key) {
             if (key < current.occurrences) {
@@ -54,7 +52,7 @@ public class BinaryTree {
         return current;
     }
 
-    public boolean remove(double key) {
+    public boolean remove(int key) {
         if (root == null)
             return false;
 
@@ -140,20 +138,6 @@ public class BinaryTree {
         iterate(root.leftChild);
         System.out.println(root);
         iterate(root.rightChild);
-    }
-
-    @Data
-    public static class Node {
-
-        private char symbol;
-        private double occurrences;
-        private Node leftChild;
-        private Node rightChild;
-
-        public Node(char symbol, double occurrences) {
-            this.symbol = symbol;
-            this.occurrences = occurrences;
-        }
     }
 
 }

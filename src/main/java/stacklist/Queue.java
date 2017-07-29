@@ -9,19 +9,24 @@ public class Queue {
     private int rear;
     private int elements;
 
+    public Queue(int elements) {
+        this.elements = elements;
+        array = new int[elements];
+    }
+
     public void insert(int newValue) {
         if (isFull()) {
             throw new RuntimeException("Queue is full!");
         }
 
-        if (rear == array.length-1) {
+        if (rear == array.length - 1) {
             rear = -1;
         }
         elements++;
         array[++rear] = newValue;
     }
 
-    private boolean isFull() {
+    public boolean isFull() {
         return elements == array.length;
     }
 
@@ -38,7 +43,7 @@ public class Queue {
         return removableValue;
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return elements == 0;
     }
 

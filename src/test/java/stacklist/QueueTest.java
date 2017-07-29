@@ -12,13 +12,13 @@ public class QueueTest {
     public void insert() throws Exception {
         Queue queue = new Queue(5);
         assertTrue(queue.isEmpty());
-        queue.insert(1L);
-        queue.insert(2L);
-        queue.insert(5L);
-        queue.insert(3L);
+        queue.insert(1);
+        queue.insert(2);
+        queue.insert(5);
+        queue.insert(3);
         assertFalse(queue.isFull());
         assertFalse(queue.isEmpty());
-        queue.insert(6L);
+        queue.insert(6);
         assertTrue(queue.isFull());
     }
 

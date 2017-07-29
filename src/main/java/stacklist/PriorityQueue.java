@@ -3,36 +3,40 @@ package stacklist;
 /**
  * Created by oleksandr on 09.07.17.
  */
-public class PriorityQueue {
-    private int[] array;
+public class PriorityQueue<T extends Comparable> {
+    private T[] array;
     private int elements;
 
     public PriorityQueue(int capacity) {
         this.elements = 0;
-        array = new int[capacity];
+        array = (T[]) new Comparable[capacity];
     }
 
-    public void insert(int newElement) {
+    public void insert(T newElement) {
         if (elements == 0) {
             array[0] = newElement;
         } else {
             int i;
 
 
-            for (i = elements-1; i > 0; i--) {
-                if (newElement > array[i]) {
-                    array[i+1] = array[i];
+            for (i = elements - 1; i > 0; i--) {
+                if (newElement.compareTo(array[i]) < 0) {
+                    array[i + 1] = array[i];
                 } else {
                     break;
                 }
             }
-            array[i] = newElement;
+            array[i + 1] = newElement;
         }
         elements++;
     }
 
-    public int remove() {
+    public T remove() {
         return array[--elements];
+    }
+
+    public int size() {
+        return elements;
     }
 
 }
