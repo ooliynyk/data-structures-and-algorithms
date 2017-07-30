@@ -19,7 +19,7 @@ public class PriorityQueue<T extends Comparable> {
             int i;
 
 
-            for (i = elements - 1; i > 0; i--) {
+            for (i = elements - 1; i >= 0; i--) {
                 if (newElement.compareTo(array[i]) < 0) {
                     array[i + 1] = array[i];
                 } else {

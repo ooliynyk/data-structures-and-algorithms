@@ -15,8 +15,8 @@ public class HuffmanTree implements Comparable<HuffmanTree> {
         long secondOccurrences = second.occurrences;
         long totalOccurrences = firstOccurrences + secondOccurrences;
 
-        HuffmanTree tree = new HuffmanTree(' ', totalOccurrences);
-        if (firstOccurrences > secondOccurrences) {
+        HuffmanTree tree = new HuffmanTree('\r', totalOccurrences);
+        if (firstOccurrences < secondOccurrences) {
             tree.root.leftChild = first.root;
             tree.root.rightChild = second.root;
         } else {
@@ -27,32 +27,9 @@ public class HuffmanTree implements Comparable<HuffmanTree> {
         return tree;
     }
 
-    /*public void insert(char symbol, long occurrences) {
-        Node newNode = new Node(symbol, occurrences);
-        if (root != null) {
-            Node current = root;
-            while (true) {
-                if (occurrences < current.occurrences) {
-                    if (current.leftChild != null) {
-                        current = current.leftChild;
-                    } else {
-                        current.leftChild = newNode;
-                        break;
-                    }
-                } else {
-                    if (current.rightChild != null) {
-                        current = current.rightChild;
-                    } else {
-                        current.rightChild = newNode;
-                        break;
-                    }
-                }
-            }
-        } else {
-            root = newNode;
-            this.occurrences = occurrences;
-        }
-    }*/
+    public Node root() {
+        return root;
+    }
 
     public void display() {
         display(root);
@@ -61,8 +38,12 @@ public class HuffmanTree implements Comparable<HuffmanTree> {
     private void display(Node node) {
         if (node == null)
             return;
+
         display(node.leftChild);
-        System.out.printf("%c : %d\n", node.symbol, node.occurrences);
+
+        if (node.symbol != '\r')
+            System.out.printf("%c : %d\n", node.symbol, node.occurrences);
+
         display(node.rightChild);
     }
 
