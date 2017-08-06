@@ -1,4 +1,4 @@
-package trees;
+package binarytree;
 
 
 import stacklist.PriorityQueue;
