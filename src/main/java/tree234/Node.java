@@ -4,11 +4,8 @@ import java.io.PrintStream;
 
 public class Node {
 
-    private static final int MAX_ITEMS = 4;
-
-    private static final int ITEM_A = 0;
-    private static final int ITEM_B = 1;
-    private static final int ITEM_C = 2;
+    private static final int MAX_ITEMS = 3;
+    private static final int MAX_CHILD = 4;
 
     private DataItem[] items;
     private Node[] child;
@@ -37,6 +34,23 @@ public class Node {
         return item;
     }
 
+    public Node popChildAt(int position) {
+        if (position >= MAX_CHILD)
+            throw new RuntimeException("Position must not be greater than " + (MAX_CHILD-1));
+
+        Node children = child[position];
+        child[position] = null;
+        return children;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void linkChildren(Node children) {
+
+    }
+
     public boolean isLeaf() {
         return child[0] == null;
     }
@@ -49,37 +63,6 @@ public class Node {
         for (Node children : child) {
             children.display(stream);
         }
-    }
-
-    public Node createBrother() {
-        Node brother = new Node();
-        brother.parent = parent;
-        moveDataItem(2, brother);
-        moveDataItem(1, parent);
-
-        moveChildren(2, brother);
-        moveChildren(3, brother);
-
-        return brother;
-    }
-
-
-    private void addChildrenAfter(Node node, Node newChildren) {
-        int position;
-        for (position = 0; position < child.length - 1; position++) {
-            if (node.equals(child[position])) {
-                break;
-            }
-        }
-        child[position + 1] = newChildren;
-    }
-
-    private void moveDataItem(int position, Node to) {
-
-    }
-
-    private void moveChildren(int position, Node to) {
-
     }
 
     public Node getNextChild(long key) {
