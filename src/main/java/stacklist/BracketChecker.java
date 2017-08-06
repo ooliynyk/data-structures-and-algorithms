@@ -20,7 +20,7 @@ public class BracketChecker {
                 case ']':
                 case '}':
                     if (stack.isEmpty()) {
-                        char pop = stack.pop();
+                        char pop = (char) stack.pop();
                         if (last == '}' && pop != '{' ||
                                 last == ')' && pop != '(' ||
                                 last == ']' && pop != '[') {
