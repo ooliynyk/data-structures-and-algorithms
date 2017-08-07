@@ -8,29 +8,34 @@ public class Tree234 {
 
     private Node root;
 
-    public DataItem find(long key) {
+    public Tree234() {
+        root = new Node();
+    }
+
+    public DataItem insert(DataItem item) {
         Node current = root;
-        while (current.findItem(key) == -1 && !current.isLeaf()) {
-            current = current.getNextChild(key);
+        while (current.findItem(item) == -1 && !current.isLeaf()) {
+            current = current.getNextChildrenBy(item);
             if (current.isFull()) {
                 split(current);
+            } else if (current.isLeaf()) {
+                current.insertItem(item);
             }
         }
         return null;
     }
 
-    private void split(Node node) {
-        Node newRight = new Node();
+    private void split(Node splittable) {
+        Node parent = getOrCreateParentFor(splittable);
 
-        Node parent = getOrCreateParentFor(node);
-        parent.linkChildren(newRight);
+        Node newRight = Node.newChildrenOf(parent);
 
-        moveItemAt(ITEM_B, node, parent);
+        moveItemAt(ITEM_B, splittable, parent);
 
-        moveItemAt(ITEM_C, node, newRight);
+        moveItemAt(ITEM_C, splittable, newRight);
 
-        moveChildrenAt(2, node, newRight);
-        moveChildrenAt(3, node, newRight);
+        moveChildrenAt(2, splittable, newRight);
+        moveChildrenAt(3, splittable, newRight);
     }
 
     private Node getOrCreateParentFor(Node node) {
