@@ -12,17 +12,20 @@ public class Tree234 {
         root = new Node();
     }
 
-    public DataItem insert(DataItem item) {
+    public void insert(DataItem item) {
         Node current = root;
-        while (current.findItem(item) == -1 && !current.isLeaf()) {
-            current = current.getNextChildrenBy(item);
+        while (true) {
             if (current.isFull()) {
                 split(current);
-            } else if (current.isLeaf()) {
+            }
+            if (current.isLeaf()) {
                 current.insertItem(item);
+                break;
+            } else {
+                current = current.getNextChildBy(item);
             }
         }
-        return null;
+
     }
 
     private void split(Node splittable) {
@@ -34,8 +37,8 @@ public class Tree234 {
 
         moveItemAt(ITEM_C, splittable, newRight);
 
-        moveChildrenAt(2, splittable, newRight);
-        moveChildrenAt(3, splittable, newRight);
+        moveLastChild(splittable, newRight);
+        moveLastChild(splittable, newRight);
     }
 
     private Node getOrCreateParentFor(Node node) {
@@ -43,6 +46,7 @@ public class Tree234 {
         if (node == root) {
             parent = new Node();
             root = parent;
+            parent.pushChild(node);
         } else {
             parent = node.getParent();
         }
@@ -54,9 +58,9 @@ public class Tree234 {
         toNode.insertItem(item);
     }
 
-    private static void moveChildrenAt(int position, Node fromNode, Node toNode) {
-        Node children = fromNode.popChildAt(position);
-        toNode.linkChildren(children);
+    private static void moveLastChild(Node fromNode, Node toNode) {
+        Node child = fromNode.popChild();
+        toNode.pushChild(child);
     }
 
     public static void main(String[] args) {

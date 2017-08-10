@@ -2,14 +2,25 @@ package tree234;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static junit.framework.TestCase.assertTrue;
+
 public class Tree234Test {
     @Test
     public void insert() throws Exception {
         Tree234 tree = new Tree234();
-        tree.insert(new DataItem(3));
-        tree.insert(new DataItem(4));
-        tree.insert(new DataItem(5));
-        tree.insert(new DataItem(6));
+        tree.insert(new DataItem(70));
+        tree.insert(new DataItem(50));
+        tree.insert(new DataItem(30));
+        tree.insert(new DataItem(40));
+        tree.insert(new DataItem(20));
+        tree.insert(new DataItem(80));
+        tree.insert(new DataItem(25));
+        tree.insert(new DataItem(90));
+        tree.insert(new DataItem(75));
+
     }
 
 }
