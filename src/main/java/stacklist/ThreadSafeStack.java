@@ -1,27 +1,36 @@
 package stacklist;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class ThreadSafeStack<T> {
 
-    private Node<T> head;
+    private AtomicReference<Node<T>> head = new AtomicReference<>();
 
     public T pop() {
-        if (head == null)
-            throw new RuntimeException("Stack is empty!");
+        Node<T> newHead;
+        Node<T> oldHead;
+        do {
+            oldHead = head.get();
+            if (oldHead == null)
+                throw new RuntimeException("Stack is empty!");
 
-        Node<T> next = head;
-        head = head.getNext();
+            newHead = oldHead.getNext();
+        } while (!head.compareAndSet(oldHead, newHead));
 
-        return next.getValue();
+        return oldHead.getValue();
     }
 
     public void push(T value) {
-        Node<T> newNode = new Node<>(value);
-        newNode.setNext(head);
-        head = newNode;
+        Node<T> newHead = new Node<>(value);
+        Node<T> oldHead;
+        do {
+            oldHead = head.get();
+            newHead.setNext(oldHead);
+        } while (!head.compareAndSet(oldHead, newHead));
     }
 
     public boolean isEmpty() {
-        return head == null;
+        return head.get() == null;
     }
 
 }
