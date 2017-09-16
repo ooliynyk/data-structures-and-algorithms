@@ -1,4 +1,4 @@
-package tree234;
+package common;
 
 import lombok.Data;
 
@@ -6,9 +6,9 @@ import java.io.PrintStream;
 
 @Data
 public class DataItem implements Comparable<DataItem> {
-    private final long value;
+    private final int value;
 
-    public DataItem(long value) {
+    public DataItem(int value) {
         this.value = value;
     }
 
@@ -18,7 +18,7 @@ public class DataItem implements Comparable<DataItem> {
 
     @Override
     public int compareTo(DataItem o) {
-        return Long.compare(value, o.value);
+        return Integer.compare(value, o.value);
     }
 
 }

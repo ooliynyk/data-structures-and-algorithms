@@ -1,9 +1,7 @@
 package tree234;
 
+import common.DataItem;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 
