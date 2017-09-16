@@ -1,99 +1,72 @@
 package tree234;
 
-import java.io.PrintStream;
+public class Node <T> {
 
-public class Node {
+    public static final int VALUES = 3;
+    public static final int CHILDREN = 4;
 
-    private static final int MAX_ITEMS = 4;
+    private T[] values;
+    private Node<T>[] children;
 
-    private static final int ITEM_A = 0;
-    private static final int ITEM_B = 1;
-    private static final int ITEM_C = 2;
-
-    private DataItem[] items;
-    private Node[] child;
-    private Node parent;
-
-    public int findItem(long key) {
-
-        return -1;
-    }
-
-    public void insertItem(DataItem item) {
-
-    }
-
-    public boolean removeItem(DataItem item) {
-        return false;
-    }
-
-    public DataItem popItemAt(int position) {
-        if (position >= MAX_ITEMS)
-            throw new RuntimeException("Position must not be greater than " + (MAX_ITEMS-1));
-
-        DataItem item = items[position];
-        items[position] = null;
-
-        return item;
+    public Node() {
+        values = (T[]) new Object[VALUES];
+        children = (Node<T>[]) new Node[CHILDREN];
     }
 
     public boolean isLeaf() {
-        return child[0] == null;
+        return children[0] == null;
     }
 
     public boolean isFull() {
-        return items.length == MAX_ITEMS;
+        return values[VALUES-1] != null;
     }
 
-    public void display(PrintStream stream) {
-        for (Node children : child) {
-            children.display(stream);
+    public void setValueAt(T value, int position) {
+        if (isFull()) {
+            throw new IllegalStateException("Node is full");
+        }
+        validateValuePosition(position);
+        values[position] = value;
+    }
+
+    private static void validateValuePosition(int position) {
+        if (position < 0 || position > VALUES-1) {
+            throw new IllegalArgumentException("Position is out of bounds: " + position);
         }
     }
 
-    public Node createBrother() {
-        Node brother = new Node();
-        brother.parent = parent;
-        moveDataItem(2, brother);
-        moveDataItem(1, parent);
+    public T removeValueAt(int position) {
+        validateValuePosition(position);
 
-        moveChildren(2, brother);
-        moveChildren(3, brother);
-
-        return brother;
+        T removableValue = values[position];
+        values[position] = null;
+        return removableValue;
     }
 
+    public void setChildAt(Node<T> newChild, int position) {
+        validateChildPosition(position);
+        children[position] = newChild;
+    }
 
-    private void addChildrenAfter(Node node, Node newChildren) {
-        int position;
-        for (position = 0; position < child.length - 1; position++) {
-            if (node.equals(child[position])) {
-                break;
-            }
+    public Node<T> getChildAt(int position) {
+        validateChildPosition(position);
+        return children[position];
+    }
+
+    private static void validateChildPosition(int position) {
+        if (position < 0 || position > CHILDREN-1) {
+            throw new IllegalArgumentException("Position is out of bounds: " + position);
         }
-        child[position + 1] = newChildren;
     }
 
-    private void moveDataItem(int position, Node to) {
-
-    }
-
-    private void moveChildren(int position, Node to) {
-
-    }
-
-    public Node getNextChild(long key) {
-        Node next = null;
-        if (key < items[0].value)
-            next = child[0];
-        else if (items.length > 1 && key > items[0].value && key < items[1].value)
-            next = child[1];
-        else if (items.length > 2 && key < items[2].value)
-            next = child[2];
-        else if (items.length == 4 && key > items[3].value) {
-            next = child[3];
+    public Node<T> removeChildAt(int position) {
+        if (isLeaf()) {
+            throw new IllegalStateException("Node is a leaf");
         }
-        return next;
+        validateChildPosition(position);
+        Node<T> removableChild = children[position];
+        children[position] = null;
+        return removableChild;
     }
 
 }

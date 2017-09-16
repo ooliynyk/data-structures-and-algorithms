@@ -1,26 +1,25 @@
 package tree234;
 
-public class Tree234 {
-    private Node root;
+public class Tree234<T> {
 
-    public DataItem find(long key) {
-        Node current = root;
-        while (current.findItem(key) == -1 && !current.isLeaf()) {
-            current = current.getNextChild(key);
-            if (current.isFull()) {
+    private Node<T> root;
 
+    public Tree234() {
+        root = new Node<>();
+    }
+
+    public void insert(T value) {
+        Node<T> next = root;
+        do {
+            if (next.isFull()) {
+                split();
             }
-        }
-        return null;
-    }
-
-    private void split(Node node) {
-        DataItem itemB = node.popItemAt(1);
-        DataItem itemC = node.popItemAt(2);
+        } while (!next.isLeaf());
 
     }
 
-    public static void main(String[] args) {
-        System.out.println("hello");
+    private void split() {
+
     }
+
 }
