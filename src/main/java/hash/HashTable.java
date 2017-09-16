@@ -4,13 +4,15 @@ import common.DataItem;
 
 public class HashTable {
     private DataItem[] hashArray;
+    private int capacity;
     private int size;
 
     private static final DataItem NULL_DATA_ITEM = new DataItem(-1);
 
     public HashTable(int capacity) {
-        size = capacity;
-        hashArray = new DataItem[size];
+        this.capacity = capacity;
+        size = 0;
+        hashArray = new DataItem[this.capacity];
     }
 
     public DataItem find(int key) {
@@ -27,7 +29,10 @@ public class HashTable {
 
     public void insert(DataItem item) {
         int hash = hashFunc(item.getValue());
-        while (hashArray[hash] != null && hashArray[hash].equals(NULL_DATA_ITEM)) {
+        if (++size == capacity) {
+            resize();
+        }
+        while (hashArray[hash] != null && !hashArray[hash].equals(NULL_DATA_ITEM)) {
             ++hash;
             hash %= hashArray.length;
         }
@@ -49,4 +54,36 @@ public class HashTable {
     private int hashFunc(int key) {
         return key % hashArray.length;
     }
+
+    private void resize() {
+        int newSize = getPrime(capacity * 2);
+        DataItem[] newHashArray = new DataItem[newSize];
+        for (int i = 0; i < capacity; i++) {
+            DataItem currentItem = hashArray[i];
+            if (currentItem != null && !currentItem.equals(NULL_DATA_ITEM)) {
+                int hash = hashFunc(currentItem.getValue());
+                newHashArray[hash] = currentItem;
+            }
+        }
+        hashArray = newHashArray;
+        capacity = newSize;
+    }
+
+    private static int getPrime(int n) {
+        for (int i = n + 1; true; i++) {
+            if (isPrime(i)) {
+                return i;
+            }
+        }
+    }
+
+    private static boolean isPrime(int n) {
+        for (int i = 2; (i * i) <= n; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
