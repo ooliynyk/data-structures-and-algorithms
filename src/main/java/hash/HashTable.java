@@ -6,47 +6,60 @@ public class HashTable {
     private DataItem[] hashArray;
     private int capacity;
     private int size;
+    private ProbingHandlerFactory probingHandlerFactory;
 
     private static final DataItem NULL_DATA_ITEM = new DataItem(-1);
 
     public HashTable(int capacity) {
+        this(capacity, null);
+    }
+
+    public HashTable(int capacity, ProbingHandlerFactory probingHandlerFactory) {
         this.capacity = capacity;
         size = 0;
         hashArray = new DataItem[this.capacity];
+        this.probingHandlerFactory = (probingHandlerFactory != null) ? probingHandlerFactory :
+                () -> new LinearProbingHandler();
     }
 
     public DataItem find(int key) {
+        ProbingHandler probingHandler = probingHandlerFactory.create();
+
         int hash = hashFunc(key);
         while (hashArray[hash] != null) {
             if (hashArray[hash].getValue() == key) {
                 return hashArray[hash];
             }
-            ++hash;
+            hash = probingHandler.nextHash(hash);
             hash %= hashArray.length;
         }
         return null;
     }
 
     public void insert(DataItem item) {
+        ProbingHandler probingHandler = probingHandlerFactory.create();
+
         int hash = hashFunc(item.getValue());
-        if (++size == capacity) {
+        if (++size >= capacity * 2/3) {
             resize();
         }
         while (hashArray[hash] != null && !hashArray[hash].equals(NULL_DATA_ITEM)) {
-            ++hash;
+            hash = probingHandler.nextHash(hash);
             hash %= hashArray.length;
         }
         hashArray[hash] = item;
     }
 
     public void delete(int key) {
+        ProbingHandler probingHandler = probingHandlerFactory.create();
+
         int hash = hashFunc(key);
         while (hashArray[hash] != null) {
             if (hashArray[hash].getValue() == key) {
                 hashArray[hash] = NULL_DATA_ITEM;
                 return;
             }
-            ++hash;
+            hash = probingHandler.nextHash(hash);
             hash %= hashArray.length;
         }
     }
