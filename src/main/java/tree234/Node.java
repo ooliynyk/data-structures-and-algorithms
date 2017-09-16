@@ -1,6 +1,6 @@
 package tree234;
 
-public class Node <T> {
+public class Node <T extends Comparable> {
 
     public static final int VALUES = 3;
     public static final int CHILDREN = 4;
@@ -9,7 +9,7 @@ public class Node <T> {
     private Node<T>[] children;
 
     public Node() {
-        values = (T[]) new Object[VALUES];
+        values = (T[]) new Comparable[VALUES];
         children = (Node<T>[]) new Node[CHILDREN];
     }
 
@@ -21,18 +21,37 @@ public class Node <T> {
         return values[VALUES-1] != null;
     }
 
-    public void setValueAt(T value, int position) {
+    public int values() {
+        int count;
+        for (count = 0; count < VALUES; count++) {
+            if (values[count] == null) {
+                break;
+            }
+        }
+        return count;
+    }
+
+    public void addValue(T value) {
         if (isFull()) {
             throw new IllegalStateException("Node is full");
         }
-        validateValuePosition(position);
+        int position;
+        for (position = 0; position < values(); position++) {
+            if (value.compareTo(values[position]) < 0) {
+                break;
+            }
+        }
+
+
+        for (int i = VALUES-1; i > position; i--) {
+            values[i] = values[i-1];
+        }
         values[position] = value;
     }
 
-    private static void validateValuePosition(int position) {
-        if (position < 0 || position > VALUES-1) {
-            throw new IllegalArgumentException("Position is out of bounds: " + position);
-        }
+    public T getValueAt(int position) {
+        validateValuePosition(position);
+        return values[position];
     }
 
     public T removeValueAt(int position) {
@@ -43,20 +62,29 @@ public class Node <T> {
         return removableValue;
     }
 
-    public void setChildAt(Node<T> newChild, int position) {
-        validateChildPosition(position);
+    public void addChild(Node<T> newChild) {
+        int position;
+        for (position = 0; position < CHILDREN; position++) {
+            Node<T> current = children[position];
+            if (current == null) {
+                break;
+            }
+
+            T newChildFirstValue = newChild.getValueAt(0);
+            T currentChildFirstValue = current.getValueAt(0);
+            if (newChildFirstValue.compareTo(currentChildFirstValue) < 0) {
+                break;
+            }
+        }
+        for (int i = CHILDREN-1; i > position; i--) {
+            children[i] = children[i-1];
+        }
         children[position] = newChild;
     }
 
     public Node<T> getChildAt(int position) {
         validateChildPosition(position);
         return children[position];
-    }
-
-    private static void validateChildPosition(int position) {
-        if (position < 0 || position > CHILDREN-1) {
-            throw new IllegalArgumentException("Position is out of bounds: " + position);
-        }
     }
 
     public Node<T> removeChildAt(int position) {
@@ -67,6 +95,18 @@ public class Node <T> {
         Node<T> removableChild = children[position];
         children[position] = null;
         return removableChild;
+    }
+
+    private static void validateChildPosition(int position) {
+        if (position < 0 || position > CHILDREN-1) {
+            throw new IllegalArgumentException("Position is out of bounds: " + position);
+        }
+    }
+
+    private static void validateValuePosition(int position) {
+        if (position < 0 || position > VALUES-1) {
+            throw new IllegalArgumentException("Position is out of bounds: " + position);
+        }
     }
 
 }

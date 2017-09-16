@@ -13,16 +13,18 @@ public class NodeTest {
         assertTrue(node.isLeaf());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldFailWithInvalidValuePosition() {
+    @Test(expected = IllegalStateException.class)
+    public void insertValueIntoFullNodeShouldFail() {
         Node<Integer> node = new Node<>();
-        node.setValueAt(15, -1);
+        for (int i = 0; i < Node.VALUES+1; i++) {
+            node.addValue(i);
+        }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+ /*   @Test(expected = IllegalArgumentException.class)
     public void shouldFailWithInvalidChildPosition() {
         Node<Integer> node = new Node<>();
-        node.setChildAt(new Node<>(), -1);
-    }
+        node.addChild(new Node<>(), -1);
+    }*/
 
 }

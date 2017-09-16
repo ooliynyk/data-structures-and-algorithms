@@ -8,6 +8,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertTrue;
 
 public class Tree234Test {
+
     @Test
     public void insert() throws Exception {
         Tree234 tree = new Tree234();
@@ -20,7 +21,7 @@ public class Tree234Test {
         tree.insert(new DataItem(25));
         tree.insert(new DataItem(90));
         tree.insert(new DataItem(75));
-
+        tree.insert(new DataItem(10));
     }
 
 }
