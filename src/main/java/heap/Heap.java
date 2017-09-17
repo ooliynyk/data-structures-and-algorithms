@@ -6,7 +6,7 @@ public class Heap<T extends Comparable<T>> {
     private int size;
 
     public Heap(int capacity) {
-        heapArray = (T[]) new Object[capacity];
+        heapArray = (T[]) new Comparable[capacity];
         size = 0;
     }
 
@@ -18,7 +18,7 @@ public class Heap<T extends Comparable<T>> {
     private void trickleUp(int position) {
         T value = heapArray[position];
         int parent = (position - 1) / 2;
-        while (parent > 0 && heapArray[position].compareTo(heapArray[parent]) > 0) {
+        while (parent > 0 && value.compareTo(heapArray[parent]) > 0) {
             heapArray[position] = heapArray[parent];
 
             position = parent;
@@ -29,8 +29,8 @@ public class Heap<T extends Comparable<T>> {
 
     public T remove() {
         T removable = heapArray[0];
-        heapArray[0] = heapArray[size-1];
-        trickleDown();
+        heapArray[0] = heapArray[--size];
+        trickleDown(0);
         return removable;
     }
 
@@ -45,7 +45,7 @@ public class Heap<T extends Comparable<T>> {
             } else {
                 next = rightChild;
             }
-            if (heapArray[position].compareTo(heapArray[next]) > 0) {
+            if (top.compareTo(heapArray[next]) > 0) {
                 break;
             }
             heapArray[position] = heapArray[next];
