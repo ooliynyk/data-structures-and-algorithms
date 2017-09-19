@@ -9,7 +9,14 @@ public class Graph {
     private int[][] adjacencyMatrix;
     private int size;
 
+    public Graph(int capacity) {
+        this.vertices = new Vertex[capacity];
+    }
+
     public void insert(Vertex vertex) {
+        if (size >= vertices.length) {
+            throw new IllegalStateException("Graph is full");
+        }
         vertices[size++] = vertex;
     }
 
