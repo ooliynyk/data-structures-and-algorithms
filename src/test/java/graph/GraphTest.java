@@ -24,4 +24,19 @@ public class GraphTest {
         graph.insert(new Vertex('B'));
     }
 
+    @Test
+    public void verticesShouldBeLinked() {
+        Graph graph = new Graph(3);
+        Vertex a = new Vertex('A');
+        Vertex b = new Vertex('B');
+        Vertex c = new Vertex('C');
+        graph.insert(a);
+        graph.insert(b);
+        assertFalse(graph.isLinked(a, b));
+        graph.link(a, b);
+        assertTrue(graph.isLinked(a, b));
+        assertFalse(graph.isLinked(a, c));
+        assertFalse(graph.isLinked(b, c));
+    }
+
 }
