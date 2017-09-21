@@ -1,8 +1,6 @@
 package graph;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 
 public class Graph {
@@ -59,14 +57,36 @@ public class Graph {
                 vertexStack.push(unvisitedVertexIndex);
             }
         }
+        clearVisitoryFlags();
+    }
+
+    private void clearVisitoryFlags() {
         for (int i = 0; i < size; i++) {
             visitoryFlags[i] = false;
         }
     }
 
+    public void minimalSpanningTree() {
+        Stack<Integer> vertexStack = new Stack<>();
+        vertexStack.push(0);
+        while (!vertexStack.isEmpty()) {
+            int currentVertexIndex = vertexStack.peek();
+            int unvisitedVertexIndex = getUnvisitedVertex(currentVertexIndex);
+            if (unvisitedVertexIndex != -1) {
+                visit(currentVertexIndex);
+                visit(unvisitedVertexIndex);
+                System.out.println(" ");
+                vertexStack.push(unvisitedVertexIndex);
+            } else {
+                vertexStack.pop();
+            }
+        }
+        clearVisitoryFlags();
+    }
+
     private void visit(int index) {
         visitoryFlags[index] = true;
-        System.out.printf("%s ", vertices[index]);
+        System.out.printf("%s", vertices[index]);
     }
 
     private int getUnvisitedVertex(int originIndex) {
