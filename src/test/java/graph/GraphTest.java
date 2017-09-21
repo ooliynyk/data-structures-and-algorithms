@@ -37,9 +37,6 @@ public class GraphTest {
         assertTrue(graph.isLinked(a, b));
         assertFalse(graph.isLinked(a, c));
         assertFalse(graph.isLinked(b, c));
-        graph.minimalSpanningTree();
-        graph.dfs();
-        graph.bfs();
     }
 
 }
