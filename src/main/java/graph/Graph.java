@@ -43,7 +43,7 @@ public class Graph {
         return Arrays.asList(vertices);
     }
 
-    public void deepVisit() {
+    public void dfs() {
         Stack<Integer> vertexStack = new Stack<>();
         vertexStack.push(0);
         visit(0);
@@ -57,13 +57,28 @@ public class Graph {
                 vertexStack.push(unvisitedVertexIndex);
             }
         }
-        clearVisitoryFlags();
+        finishVisits();
     }
 
-    private void clearVisitoryFlags() {
+    public void bfs() {
+        Queue<Integer> vertexQueue = new LinkedList<>();
+        vertexQueue.offer(0);
+        while (!vertexQueue.isEmpty()) {
+            int currentVertexIndex = vertexQueue.poll();
+            int unvisitedVertexIndex;
+            while ((unvisitedVertexIndex = getUnvisitedVertex(currentVertexIndex)) != -1) {
+                visit(unvisitedVertexIndex);
+                vertexQueue.offer(unvisitedVertexIndex);
+            }
+        }
+        finishVisits();
+    }
+
+    private void finishVisits() {
         for (int i = 0; i < size; i++) {
             visitoryFlags[i] = false;
         }
+        System.out.println();
     }
 
     public void minimalSpanningTree() {
@@ -75,13 +90,13 @@ public class Graph {
             if (unvisitedVertexIndex != -1) {
                 visit(currentVertexIndex);
                 visit(unvisitedVertexIndex);
-                System.out.println(" ");
+                System.out.printf(" ");
                 vertexStack.push(unvisitedVertexIndex);
             } else {
                 vertexStack.pop();
             }
         }
-        clearVisitoryFlags();
+        finishVisits();
     }
 
     private void visit(int index) {
