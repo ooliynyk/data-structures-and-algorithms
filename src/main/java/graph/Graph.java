@@ -22,14 +22,23 @@ public class Graph {
         vertices[size++] = vertex;
     }
 
+    public void insert(char label) {
+        insert(new Vertex(label));
+    }
+
     public void link(Vertex first, Vertex second) {
         int firstVertexIndex = findVertexIndex(first);
         int secondVertexIndex = findVertexIndex(second);
-        if (firstVertexIndex == -1 || secondVertexIndex == -1) {
+
+        link(vertices[firstVertexIndex], vertices[secondVertexIndex]);
+    }
+
+    public void link(int from, int to) {
+        if (from == -1 || to == -1) {
             throw new IllegalArgumentException("One of vertices is not found in the graph");
         }
-        adjacencyMatrix[firstVertexIndex][secondVertexIndex] = 1;
-        adjacencyMatrix[secondVertexIndex][firstVertexIndex] = 1;
+        adjacencyMatrix[from][to] = 1;
+        adjacencyMatrix[to][from] = 1;
     }
 
     public boolean isLinked(Vertex first, Vertex second) {
@@ -42,6 +51,7 @@ public class Graph {
     public List<Vertex> vertices() {
         return Arrays.asList(vertices);
     }
+
 
     public void dfs() {
         Stack<Integer> vertexStack = new Stack<>();
@@ -72,6 +82,45 @@ public class Graph {
             }
         }
         finishVisits();
+    }
+
+    public List<Character> topo() {
+        int counter = size;
+        List<Character> labels = new ArrayList<>(counter);
+        while (--counter > 0) {
+            int currentVertexPosition = noSuccessors();
+            if (currentVertexPosition == -1) {
+                System.err.printf("Graph has cycles");
+                return Collections.emptyList();
+            }
+            labels.add(vertices[currentVertexPosition].getLabel());
+            delete(currentVertexPosition);
+        }
+        return labels;
+    }
+
+    public void delete(int position) {
+        for (int i = 0; i < size - 1; i++) {
+            adjacencyMatrix[i] = adjacencyMatrix[i+1];
+            for (int j = position; j < size - 1; j++) {
+                adjacencyMatrix[i][j] = adjacencyMatrix[i][j+1];
+            }
+        }
+    }
+
+    private int noSuccessors() {
+        for (int i = 0; i < size; i++) {
+            boolean hasSuccessors = false;
+            for (int j = 0; j < size; j++) {
+                if (adjacencyMatrix[i][j] == 1) {
+                    hasSuccessors = true;
+                    break;
+                }
+            }
+            if (!hasSuccessors)
+                return i;
+        }
+        return -1;
     }
 
     private void finishVisits() {

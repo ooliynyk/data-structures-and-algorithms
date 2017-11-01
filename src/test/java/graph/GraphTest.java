@@ -39,4 +39,26 @@ public class GraphTest {
         assertFalse(graph.isLinked(b, c));
     }
 
+    @Test
+    public void testTopo() {
+        Graph theGraph = new Graph(20);
+        theGraph.insert('A');
+        theGraph.insert('B');
+        theGraph.insert('C');
+        theGraph.insert('D');
+        theGraph.insert('E');
+        theGraph.insert('F');
+        theGraph.insert('G');
+        theGraph.insert('H');
+        theGraph.link(0, 3);
+        theGraph.link(0, 4);
+        theGraph.link(1, 4);
+        theGraph.link(2, 5);
+        theGraph.link(3, 6);
+        theGraph.link(4, 6);
+        theGraph.link(5, 7);
+        theGraph.link(6, 7);
+        theGraph.topo();
+    }
+
 }
